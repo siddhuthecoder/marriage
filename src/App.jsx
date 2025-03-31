@@ -36,7 +36,7 @@ function App() {
 
   const fetchExpensesByStatus = async (status) => {
     try {
-      const response = await axios.get(`/api/expenses/status/${status}`);
+      const response = await axios.get(`https://marriage-backend.onrender.com/api/expenses/status/${status}`);
       setExpenses(response.data);
     } catch (error) {
       toast.error('Failed to fetch expenses');
@@ -45,7 +45,7 @@ function App() {
 
   const fetchTotalExpenses = async () => {
     try {
-      const response = await axios.get('/api/expenses/total');
+      const response = await axios.get('https://marriage-backend.onrender.com/api/expenses/total');
       setTotalExpenses(response.data.total);
     } catch (error) {
       toast.error('Failed to fetch total expenses');
@@ -54,7 +54,7 @@ function App() {
 
   const fetchSummary = async () => {
     try {
-      const response = await axios.get('/api/expenses/summary');
+      const response = await axios.get('https://marriage-backend.onrender.com/api/expenses/summary');
       const summaryData = response.data.reduce((acc, item) => {
         acc[item._id] = item;
         return acc;
