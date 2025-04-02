@@ -108,10 +108,10 @@ function App() {
       }
 
       if (currentExpense) {
-        await axios.put(`/api/expenses/${currentExpense._id}`, submitData);
+        await axios.put(`https://marriage-backend.onrender.com/api/expenses/${currentExpense._id}`, submitData);
         toast.success('Expense updated successfully');
       } else {
-        await axios.post('/api/expenses', submitData);
+        await axios.post('https://marriage-backend.onrender.com/api/expenses', submitData);
         toast.success('Expense added successfully');
       }
       setIsModalOpen(false);
@@ -457,7 +457,7 @@ function App() {
                     </div>
                     <div className="mt-2 space-y-3">
                       {paymentHistory.map((payment, index) => (
-                        <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-all duration-200">
                           <div className="flex justify-between items-center">
                             <span className="font-medium text-green-600">₹{payment.amount.toLocaleString()}</span>
                             <span className="text-sm text-gray-500">
@@ -477,12 +477,12 @@ function App() {
                       )}
                     </div>
                   </div>
-                  <form onSubmit={handlePayment} className="space-y-4">
+                  <form onSubmit={handlePayment} className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
                         Payment Amount
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="relative rounded-lg shadow-sm">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <span className="text-gray-500 sm:text-sm">₹</span>
                         </div>
@@ -498,10 +498,11 @@ function App() {
                               setPaymentData({ ...paymentData, amount: value });
                             }
                           }}
-                          className="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                          className="pl-7 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
                           min="0"
                           max={currentExpense.amount - currentExpense.totalPaid}
                           step="any"
+                          placeholder="0.00"
                           required
                         />
                       </div>
@@ -511,18 +512,18 @@ function App() {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Notes</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
                       <textarea
                         value={paymentData.notes}
                         onChange={(e) => setPaymentData({ ...paymentData, notes: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
                         rows="2"
                         placeholder="Optional payment notes"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-lg transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-md"
                       disabled={!paymentData.amount || Number(paymentData.amount) <= 0}
                     >
                       Record Payment
@@ -560,13 +561,13 @@ function App() {
                   </button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-6">
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Category</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                       <select
                         value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
                       >
                         {categories.map((category) => (
                           <option key={category} value={category}>{category}</option>
@@ -574,43 +575,51 @@ function App() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Description</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                       <input
                         type="text"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
+                        placeholder="Enter expense description"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Amount</label>
-                      <input
-                        type="number"
-                        value={formData.amount}
-                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                        required
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                      <div className="relative rounded-lg shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <span className="text-gray-500 sm:text-sm">₹</span>
+                        </div>
+                        <input
+                          type="number"
+                          value={formData.amount}
+                          onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                          className="pl-7 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
+                          placeholder="0.00"
+                          required
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Vendor</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Vendor</label>
                       <input
                         type="text"
                         value={formData.vendor}
                         onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
+                        placeholder="Enter vendor name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Payment Status</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
                       <select
                         value={formData.paymentStatus}
                         onChange={(e) => {
                           const newStatus = e.target.value;
                           handlePaymentStatusChange(newStatus);
                         }}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
                       >
                         {paymentStatuses.map((status) => (
                           <option key={status} value={status}>{status}</option>
@@ -620,32 +629,37 @@ function App() {
 
                     {formData.paymentStatus === 'Partially Paid' && (
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Remaining Amount</label>
-                        <input
-                          type="number"
-                          value={formData.remainingAmount}
-                          onChange={(e) => {
-                            const remaining = Number(e.target.value);
-                            if (remaining >= 0 && remaining < formData.amount) {
-                              setFormData({ ...formData, remainingAmount: remaining });
-                            }
-                          }}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                          placeholder="Enter remaining amount"
-                          required
-                        />
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Remaining Amount</label>
+                        <div className="relative rounded-lg shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm">₹</span>
+                          </div>
+                          <input
+                            type="number"
+                            value={formData.remainingAmount}
+                            onChange={(e) => {
+                              const remaining = Number(e.target.value);
+                              if (remaining >= 0 && remaining < formData.amount) {
+                                setFormData({ ...formData, remainingAmount: remaining });
+                              }
+                            }}
+                            className="pl-7 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-all duration-200 hover:border-gray-400"
+                            placeholder="Enter remaining amount"
+                            required
+                          />
+                        </div>
                         {formData.amount && (
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-gray-500 mt-2">
                             Paid: ₹{(formData.amount - (formData.remainingAmount || 0)).toLocaleString()}
                           </p>
                         )}
                       </div>
                     )}
                   </div>
-                  <div className="mt-6">
+                  <div className="mt-8">
                     <button
                       type="submit"
-                      className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-lg transition-colors shadow-md"
+                      className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                     >
                       {currentExpense ? 'Update Expense' : 'Add Expense'}
                     </button>
