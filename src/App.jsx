@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { toast, Toaster } from 'react-hot-toast';
-import { FiPlus, FiTrash2, FiEdit2, FiX, FiDollarSign, FiClock, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiEdit2, FiX, FiClock, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi';
+import { BiRupee } from 'react-icons/bi';
+import { BsCashStack, BsCreditCard2Back } from 'react-icons/bs';
 import axios from 'axios';
 
 function App() {
@@ -252,16 +254,16 @@ function App() {
       ) : (
         <>
           {/* Header */}
-          <header className="bg-white shadow-lg">
-            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center">
+          <header className="bg-white shadow-lg sticky top-0 z-30">
+            <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
                 <div>
-                  <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Marriage Expense Tracker</h1>
-                  <p className="mt-1 text-gray-500">Track and manage your wedding expenses</p>
+                  <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 tracking-tight">Marriage Expense Tracker</h1>
+                  <p className="mt-1 text-gray-500 text-sm sm:text-base">Track and manage your wedding expenses</p>
                 </div>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transform transition hover:scale-105 shadow-md"
+                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center gap-2 transform transition hover:scale-105 shadow-md"
                 >
                   <FiPlus className="h-5 w-5" /> Add Expense
                 </button>
@@ -270,40 +272,40 @@ function App() {
           </header>
 
           {/* Summary Cards */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-xl shadow-md p-6 transform transition hover:scale-105 border border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 transform transition hover:scale-105 border border-gray-100">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-gray-700">Total Amount Paid</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-700">Total Amount Paid</h2>
                   <div className="p-2 bg-green-100 rounded-lg">
-                    <FiCheck className="h-6 w-6 text-green-600" />
+                    <BsCashStack className="h-6 w-6 text-green-600" />
                   </div>
                 </div>
-                <p className="text-4xl font-bold text-primary-600 mt-4">₹{totalExpenses.toLocaleString()}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-primary-600 mt-4">₹{totalExpenses.toLocaleString()}</p>
                 <p className="text-sm text-gray-500 mt-2">Total payments across all expenses</p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6 transform transition hover:scale-105 border border-gray-100">
+              <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 transform transition hover:scale-105 border border-gray-100">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-gray-700">Partially Paid Items</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-700">Partially Paid Items</h2>
                   <div className="p-2 bg-yellow-100 rounded-lg">
-                    <FiClock className="h-6 w-6 text-yellow-600" />
+                    <BiRupee className="h-6 w-6 text-yellow-600" />
                   </div>
                 </div>
-                <p className="text-4xl font-bold text-yellow-600 mt-4">{summary['Partially Paid']?.count || 0}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-yellow-600 mt-4">{summary['Partially Paid']?.count || 0}</p>
                 <p className="text-sm text-gray-500 mt-2">
                   Paid: ₹{(summary['Partially Paid']?.totalPaid || 0).toLocaleString()}
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6 transform transition hover:scale-105 border border-gray-100">
+              <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 transform transition hover:scale-105 border border-gray-100">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-gray-700">Payment Progress</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-700">Payment Progress</h2>
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    <FiAlertCircle className="h-6 w-6 text-blue-600" />
+                    <BsCreditCard2Back className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
-                <p className="text-4xl font-bold text-blue-600 mt-4">
+                <p className="text-3xl sm:text-4xl font-bold text-blue-600 mt-4">
                   {Math.round((totalExpenses / 
                     (Object.values(summary).reduce((acc, curr) => acc + (curr?.totalAmount || 0), 0))) * 100)}%
                 </p>
@@ -322,23 +324,24 @@ function App() {
           </div>
 
           {/* Payment Status Tabs */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12">
             <div className="bg-white rounded-lg shadow-md p-1">
-              <nav className="flex space-x-4">
+              <nav className="flex flex-col sm:flex-row">
                 {paymentStatuses.map((status) => (
                   <button
                     key={status}
                     onClick={() => setActiveTab(status)}
                     className={`
-                      flex-1 py-4 px-6 text-sm font-medium rounded-md transition-all duration-200
+                      flex-1 py-3 sm:py-4 px-4 sm:px-6 text-sm font-medium rounded-md transition-all duration-200
                       ${activeTab === status
                         ? 'bg-primary-100 text-primary-700'
                         : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}
+                      mb-1 sm:mb-0 sm:mx-1
                     `}
                   >
                     <div className="flex items-center justify-center gap-2">
-                      {status === 'Paid' && <FiCheck className="h-4 w-4" />}
-                      {status === 'Partially Paid' && <FiClock className="h-4 w-4" />}
+                      {status === 'Paid' && <BsCashStack className="h-4 w-4" />}
+                      {status === 'Partially Paid' && <BiRupee className="h-4 w-4" />}
                       {status === 'Pending' && <FiAlertCircle className="h-4 w-4" />}
                       {status}
                     </div>
@@ -349,33 +352,33 @@ function App() {
           </div>
 
           {/* Expenses List */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 mb-12">
             <div className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-100">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid Amount</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                      <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th>
+                      <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining</th>
+                      <th className="hidden lg:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {expenses.map((expense) => (
                       <tr key={expense._id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap">{expense.category}</td>
-                        <td className="px-6 py-4">{expense.description}</td>
-                        <td className="px-6 py-4 whitespace-nowrap font-medium">₹{expense.amount.toLocaleString()}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-green-600 font-medium">₹{expense.totalPaid.toLocaleString()}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-red-600 font-medium">₹{(expense.amount - expense.totalPaid).toLocaleString()}</td>
-                        <td className="px-6 py-4">{expense.vendor}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">{expense.category}</td>
+                        <td className="px-4 sm:px-6 py-4 text-sm">{expense.description}</td>
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">₹{expense.amount.toLocaleString()}</td>
+                        <td className="hidden sm:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">₹{expense.totalPaid.toLocaleString()}</td>
+                        <td className="hidden sm:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">₹{(expense.amount - expense.totalPaid).toLocaleString()}</td>
+                        <td className="hidden lg:table-cell px-4 sm:px-6 py-4 text-sm">{expense.vendor}</td>
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                          <span className={`px-2 sm:px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             expense.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' :
                             expense.paymentStatus === 'Partially Paid' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-red-100 text-red-800'
@@ -383,24 +386,26 @@ function App() {
                             {expense.paymentStatus}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex items-center space-x-3">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex items-center space-x-2 sm:space-x-3">
                             <button
                               onClick={() => openPaymentModal(expense)}
-                              className="text-primary-600 hover:text-primary-900 transition-colors"
+                              className="text-primary-600 hover:text-primary-900 transition-colors p-1 rounded-full hover:bg-primary-50"
                               title="Add Payment"
                             >
-                              <FiDollarSign className="h-5 w-5" />
+                              <BiRupee className="h-5 w-5" />
                             </button>
                             <button
                               onClick={() => handleEdit(expense)}
-                              className="text-blue-600 hover:text-blue-900 transition-colors"
+                              className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded-full hover:bg-blue-50"
+                              title="Edit"
                             >
                               <FiEdit2 className="h-5 w-5" />
                             </button>
                             <button
                               onClick={() => handleDelete(expense._id)}
-                              className="text-red-600 hover:text-red-900 transition-colors"
+                              className="text-red-600 hover:text-red-900 transition-colors p-1 rounded-full hover:bg-red-50"
+                              title="Delete"
                             >
                               <FiTrash2 className="h-5 w-5" />
                             </button>
@@ -410,10 +415,10 @@ function App() {
                     ))}
                     {expenses.length === 0 && (
                       <tr>
-                        <td colSpan="8" className="px-6 py-12 text-center text-gray-500">
+                        <td colSpan="8" className="px-4 sm:px-6 py-8 sm:py-12 text-center text-gray-500">
                           <div className="flex flex-col items-center">
-                            <FiAlertCircle className="h-12 w-12 text-gray-400 mb-4" />
-                            <p className="text-lg font-medium">No {activeTab.toLowerCase()} expenses found</p>
+                            <FiAlertCircle className="h-10 sm:h-12 w-10 sm:w-12 text-gray-400 mb-3 sm:mb-4" />
+                            <p className="text-base sm:text-lg font-medium">No {activeTab.toLowerCase()} expenses found</p>
                             <p className="text-sm text-gray-400 mt-1">Add a new expense to get started</p>
                           </div>
                         </td>
